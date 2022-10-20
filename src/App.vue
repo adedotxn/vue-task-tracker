@@ -1,85 +1,93 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+import PageHeader from "./components/PageHeader.vue";
+import Tasks from './components/Tasks.vue'
+import AddTask from './components/AddTask.vue'
+
+export default {
+  name : "App",
+  components : {
+    PageHeader,
+    Tasks,
+    
+    AddTask
+  },
+  data() {
+    return {
+      tasks : [],
+      showAddTask : false
+    }
+  },
+  methods : {
+    deleteTask(id :  number) {
+      if(confirm("Are you sure?")) {
+        this.tasks = this.tasks.filter((task) => task.id !== id)
+      }
+    },
+    toggleReminder(id : number) {
+      this.tasks = this.tasks.map((task) => 
+        task.id === id ? {...task, reminder : !task.reminder} : task
+      )
+    },
+    addTask(task) {
+      this.tasks = [task, ...this.tasks]
+    },
+    handleAddTask() {
+      this.showAddTask = !this.showAddTask
+    }
+  },
+  created() {
+    this.tasks = [
+      {
+        id : 1,
+        text : "Doctor's Appointment",
+        day : "Dec 31",
+        reminder : true
+      },
+      {
+        id : 2,
+        text : "Tattoo Appointment",
+        day : "Dec 31",
+        reminder : true
+      }, {
+        id : 3,
+        text : "Golf Practice",
+        day : "Dec 31",
+        reminder : true
+      },
+      {
+        id : 4,
+        text : "Wake up",
+        day : "Dec 31",
+        reminder : false
+      },
+    ]
+  }
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <PageHeader 
+    @show-add-task="handleAddTask" 
+    title = "Task Trackerr" 
+    :showAddTask = "showAddTask"
+  />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <section v-if="showAddTask">
+    <AddTask @add-task ="addTask" />
+  </section>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <main>
+    <Tasks :tasks="tasks" 
+      @delete-task="deleteTask"
+      @toggle-reminder="toggleReminder"
+    />
+  </main>
+  
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
+  main {
+    display: grid;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>
