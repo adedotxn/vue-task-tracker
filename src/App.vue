@@ -2,18 +2,23 @@
 import PageHeader from "./components/PageHeader.vue";
 import Tasks from './components/Tasks.vue'
 import AddTask from './components/AddTask.vue'
-
-export default {
+import {defineComponent} from 'vue'
+export default defineComponent({
   name : "App",
   components : {
     PageHeader,
     Tasks,
-    
+
     AddTask
   },
   data() {
     return {
-      tasks : [],
+      tasks : [{
+        id : 0,
+        text : "",
+        day : "",
+        reminder : false
+      }],
       showAddTask : false
     }
   },
@@ -28,7 +33,7 @@ export default {
         task.id === id ? {...task, reminder : !task.reminder} : task
       )
     },
-    addTask(task) {
+    addTask(task: { id: number; text: string; day: string; reminder: boolean; }) {
       this.tasks = [task, ...this.tasks]
     },
     handleAddTask() {
@@ -62,7 +67,7 @@ export default {
       },
     ]
   }
-}
+})
 </script>
 
 <template>

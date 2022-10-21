@@ -24,14 +24,6 @@
     }, 
     emits : ["show-add-task"]
   }
-
-  // import { ref } from "vue";
-
-// const darkTheme = ref(false);
-
-//   const toggleDarkMode = () => {
-//     darkTheme.value = !darkTheme.value;
-//   }
 </script>
 
 <style scoped>
@@ -48,9 +40,6 @@ header h1 {
   color : white;
 }
 
-header div {
-  /* border : 1px solid red; */
-}
 
 .toggle {
   display: flex;
@@ -58,10 +47,6 @@ header div {
   gap : .5rem;
 }
 @media (min-width: 1024px) {
-  header {
-    
-  }
-
   .toggle {
     cursor: pointer;
   }

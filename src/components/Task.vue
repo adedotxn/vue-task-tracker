@@ -13,18 +13,30 @@
 
 
 <script lang="ts">
+import {defineComponent} from 'vue'
+import type {PropType} from 'vue'
 
-export default {
+interface Task {
+    id: number, 
+    text: string,
+    day: string,
+    reminder: boolean
+}
+
+export default defineComponent({
     name  : "Task",
     props : {
-        task : Object
+        task : {
+            type : Object as PropType<Task>,
+            required : true
+        } 
     },
     methods : {
         onDelete(id : number) : void {
             this.$emit('delete-task', id)
         }
     }
-}
+})
 </script>
 
 

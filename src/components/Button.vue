@@ -3,7 +3,9 @@
 </template>
 
 <script lang="ts">
-    export default {
+import {defineComponent} from 'vue'
+
+    export default defineComponent({
         name : "Button",
         props : {
             title : String,
@@ -15,7 +17,7 @@
                 this.$emit("btn-click")
             }
         }
-    }
+    })
 </script>
 
 <style scoped>

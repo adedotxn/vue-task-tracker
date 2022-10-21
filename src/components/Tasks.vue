@@ -8,23 +8,28 @@
 
 
 <script lang="ts">
+import {defineComponent, type PropType} from 'vue'
 import Task from './Task.vue'
 
-export default {
+interface TaskInterface {
+    id : number, 
+    text : string,
+    day : string,
+    reminder : boolean
+}
+
+export default defineComponent({
     name : "Tasks",
     components : {
         Task
     },
     props : {
-        tasks : Array
+        tasks : Array as PropType<TaskInterface[]>
     },
     emits : ['delete-task', 'toggle-reminder']
-}
+})
 
 </script>
 
 <style scoped>
-    .task-container {
-       
-    }
 </style>
