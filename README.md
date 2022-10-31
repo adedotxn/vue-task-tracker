@@ -1,5 +1,4 @@
-# rest-countries
-
+# vue-task-tracker
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
@@ -31,6 +30,7 @@ npm install
 
 ```sh
 npm run dev
+npm run json-serve
 ```
 
 ### Type-Check, Compile and Minify for Production
