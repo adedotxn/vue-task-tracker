@@ -1,133 +1,43 @@
+<template>
+  <PageHeader
+    @show-add-task="handleAddTask"
+    title="Task Trackerr"
+    :showAddTask="showAddTask"
+  />
+
+  <router-view :showAddTask="showAddTask"></router-view>
+  <footer>
+    <Footer />
+  </footer>
+</template>
+
 <script lang="ts">
 import PageHeader from "./components/PageHeader.vue";
-import Tasks from './components/Tasks.vue'
-import AddTask from './components/AddTask.vue'
-import {defineComponent} from 'vue'
+import Footer from "./components/Footer.vue";
+import { defineComponent } from "vue";
 export default defineComponent({
-  name : "App",
-  components : {
+  name: "App",
+  components: {
     PageHeader,
-    Tasks,
-
-    AddTask
+    Footer,
   },
   data() {
     return {
-      tasks : [{
-        id : 0,
-        text : "",
-        day : "",
-        reminder : false
-      }],
-      showAddTask : false
-    }
+      showAddTask: false,
+    };
   },
-  methods : {
-    async addTask(task: { id: number; text: string; day: string; reminder: boolean; }) {
-      const res = await fetch('http://localhost:5000/tasks', {
-        method : "POST",
-        headers : {
-          'Content-Type' : 'application/json',
-        },
-        body :JSON.stringify(task)
-
-      })
-
-      const data =  await res.json()
-      
-      this.tasks = [data, ...this.tasks]
-    },
-
+  methods: {
     handleAddTask() {
-      this.showAddTask = !this.showAddTask
+      this.showAddTask = !this.showAddTask;
     },
-
-    async deleteTask(id :  number) {
-      if(confirm("Are you sure?")) {
-        const res = await fetch(`http://localhost:5000/tasks/${id}`, {
-          method : "DELETE"
-        })
-
-        if(res.status === 200) {
-          this.tasks = this.tasks.filter((task) => task.id !== id)
-        } else {
-          alert("Error deleting file")
-        }
-
-      }
-    },
-
-    // used for marking a task as done or undone
-    async toggleReminder(id : number) {
-      const toToggle = await this.fetchTask(id);
-      const update = {...toToggle , reminder : !toToggle.reminder}
-
-
-      const res = await fetch(`http://localhost:5000/tasks/${id}`, {
-        method : "PUT", 
-        headers : {
-          'Content-Type' : 'application/json',
-        },
-        body :JSON.stringify(update)
-        }
-      )
-
-      const data = await res.json()
-
-      this.tasks = this.tasks.map((task) => 
-        task.id === id ? {...task, reminder : data.reminder} : task
-      )
-    },
-   
-    async fetchTasks() {
-      const response = await fetch(
-        'http://localhost:5000/tasks'
-      );
-
-      const data = await response.json()
-
-      return data
-    },
-
-    async fetchTask(id : number) {
-      const response = await fetch(
-        `http://localhost:5000/tasks/${id}`
-      );
-
-      const data = await response.json()
-
-      return data
-    }
   },
-  async created() {
-    this.tasks = await this.fetchTasks()
-  }
-})
+});
 </script>
 
-<template>
-  <PageHeader 
-    @show-add-task="handleAddTask" 
-    title = "Task Trackerr" 
-    :showAddTask = "showAddTask"
-  />
-
-  <section v-if="showAddTask">
-    <AddTask @add-task ="addTask" />
-  </section>
-
-  <main>
-    <Tasks :tasks="tasks" 
-      @delete-task="deleteTask"
-      @toggle-reminder="toggleReminder"
-    />
-  </main>
-  
-</template>
-
 <style scoped>
-  main {
-    display: grid;
-    place-items: center;
-  }
+main,
+footer {
+  display: grid;
+  place-items: center;
+}
 </style>

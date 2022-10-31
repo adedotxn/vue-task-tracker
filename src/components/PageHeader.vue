@@ -1,29 +1,40 @@
 <template>
   <header>
-    <h1> {{title}}</h1>
+    <h1>{{ title }}</h1>
 
     <div class="toggle">
-      <Button 
-        @btn-click="$emit('show-add-task')" 
-        :title = "showAddTask ? 'Close' : 'Add Task' " 
-        bgColor = "green" />
+      <Button
+        @btn-click="$emit('show-add-task')"
+        :title="showAddTask ? 'Close' : 'Add Task'"
+        bgColor="green"
+        v-show="homePage"
+      />
     </div>
   </header>
 </template>
 
 <script lang="ts">
-  import Button from "./Button.vue"
-  export default {
-    name : "PageHeader",
-    components : {
-      Button,
+import Button from "./Button.vue";
+export default {
+  name: "PageHeader",
+  components: {
+    Button,
+  },
+  props: {
+    title: String,
+    showAddTask: Boolean,
+  },
+  emits: ["show-add-task"],
+  computed: {
+    homePage() {
+      if (this.$route.path === "/") {
+        return true;
+      } else {
+        return false;
+      }
     },
-    props : {
-      title : String,
-      showAddTask : Boolean
-    }, 
-    emits : ["show-add-task"]
-  }
+  },
+};
 </script>
 
 <style scoped>
@@ -32,19 +43,18 @@ header {
   max-height: 100vh; */
   display: flex;
   justify-content: space-between;
-  padding : .5rem;
+  padding: 0.5rem;
 }
 
 header h1 {
   font-size: 1rem;
-  color : white;
+  color: white;
 }
-
 
 .toggle {
   display: flex;
   align-items: center;
-  gap : .5rem;
+  gap: 0.5rem;
 }
 @media (min-width: 1024px) {
   .toggle {
